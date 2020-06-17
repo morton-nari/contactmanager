@@ -1,16 +1,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Consumer } from "../Context";
-import { FaMinus } from "react-icons/fa";
+import { Consumer } from "../../Context";
+import { Link } from "react-router-dom";
+import { FaMinus, FaPencilRuler, FaPencilAlt } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
 import { FaTimes } from "react-icons/fa";
+import axios from "axios";
 
 class Contact extends Component {
   state = {
     showInfo: false,
   };
   onDel = (id, dispatch) => {
-    dispatch({ type: "DELETE_CONTACT", payload: id });
+    axios
+      .delete(`https://jsonplaceholder.typicode.com/users/${id}`)
+      .then((res) => dispatch({ type: "DELETE_CONTACT", payload: id }));
   };
   render() {
     const { id, name, email, phone } = this.props.contact;
@@ -37,6 +41,9 @@ class Contact extends Component {
                 >
                   <FaTimes />
                 </i>
+                <Link to={`contact/edit/${id}`}>
+                  <FaPencilAlt className="ml-2" />
+                </Link>
               </div>
               {showInfo ? (
                 <ul className="list-group">
